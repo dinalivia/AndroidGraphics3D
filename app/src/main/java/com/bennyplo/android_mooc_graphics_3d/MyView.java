@@ -30,6 +30,19 @@ public class MyView extends View {
         cube_vertices[7] = new Coordinate(1, 1, 1, 1);
         draw_cube_vertices=translate(cube_vertices,2,2,2);
         draw_cube_vertices=scale(draw_cube_vertices,40,40,40);
+        //draw_cube_vertices=rotate_y(draw_cube_vertices,45); // rotate in y
+        //draw_cube_vertices=rotate_x(draw_cube_vertices,45); // rotate in x
+        draw_cube_vertices = 
+
+        // ---- 3D Affine Transformation - Assignment part 1 ---- //
+        Coordinate centre = FindCentre(cube_vertices);
+        //draw_cube_vertices=translate(cube_vertices,-centre.x,-centre.y,-centre.z);
+        //draw_cube_vertices=rotate_z(draw_cube_vertices,80); // rotate in z
+        //draw_cube_vertices=rotate_y(draw_cube_vertices,30); // rotate in y
+        //draw_cube_vertices=translate(cube_vertices,centre.x,centre.y,centre.z);
+        //draw_cube_vertices=translate(cube_vertices,5,-5,2);
+
+
         thisview.invalidate();//update the view
     }
 
@@ -92,7 +105,7 @@ public class MyView extends View {
     {   //Affine transform a 3D object with vertices
         // vertices - vertices of the 3D object.
         // matrix - transformation matrix
-        Coordinate []result=new Coordinate[vertices.length];
+        Coordinate[] result=new Coordinate[vertices.length];
         for (int i=0;i<vertices.length;i++)
         {
            result[i]=Transformation(vertices[i],matrix);
@@ -102,22 +115,66 @@ public class MyView extends View {
     }
     //***********************************************************
     //Affine transformation
-    public Coordinate []translate(Coordinate []vertices,double tx,double ty,double tz)
+    public Coordinate[] translate (Coordinate[] vertices, double tx, double ty, double tz)
     {
-        double []matrix=GetIdentityMatrix();
-        matrix[3]=tx;
-        matrix[7]=ty;
-        matrix[11]=tz;
+        double[] matrix = GetIdentityMatrix();
+        matrix[3] = tx;
+        matrix[7] = ty;
+        matrix[11] = tz;
         return Transformation(vertices,matrix);
     }
-    private Coordinate[]scale(Coordinate []vertices,double sx,double sy,double sz)
+    private Coordinate[] scale (Coordinate[] vertices, double sx, double sy, double sz)
     {
-        double []matrix=GetIdentityMatrix();
-        matrix[0]=sx;
-        matrix[5]=sy;
-        matrix[10]=sz;
+        double[] matrix = GetIdentityMatrix();
+        matrix[0] = sx;
+        matrix[5] = sy;
+        matrix[10] = sz;
         return Transformation(vertices,matrix);
     }
+
+    private Coordinate FindCentre(Coordinate[] coordinates) {
+        Coordinate centre = new Coordinate (0, 0, 0,1);
+        for (int i = 0; i < coordinates.length; i ++) {
+            centre.x += coordinates[i].x;
+            centre.y += coordinates[i].y;
+            centre.z += coordinates[i].z;
+        }
+        centre.x = centre.x / (coordinates.length);
+        centre.y = centre.y / (coordinates.length);
+        return centre;
+    }
+
+    private Coordinate[] rotate_x (Coordinate[] vertices, double theta)
+    {
+        theta = theta*Math.PI/180;
+        double[] matrix = GetIdentityMatrix();
+        matrix[5] = Math.cos(theta);
+        matrix[6] = -Math.sin(theta);
+        matrix[9] = Math.sin(theta);
+        matrix[10] = Math.cos(theta);
+        return Transformation(vertices, matrix);
+    }
+    private Coordinate[] rotate_y (Coordinate[] vertices, double theta)
+    {
+        theta = theta*Math.PI/180;
+        double[] matrix = GetIdentityMatrix();
+        matrix[0] = Math.cos(theta);
+        matrix[2] = Math.sin(theta);
+        matrix[8] = -Math.sin(theta);
+        matrix[10] = Math.cos(theta);
+        return Transformation(vertices, matrix);
+    }
+    private Coordinate[] rotate_z (Coordinate[] vertices, double theta)
+    {
+        theta = theta * Math.PI / 180;
+        double[] matrix = GetIdentityMatrix();
+        matrix[0] = Math.cos(theta);
+        matrix[1] = -Math.sin(theta);
+        matrix[4] = Math.sin(theta);
+        matrix[5] = Math.cos(theta);
+        return Transformation(vertices, matrix);
+    }
+
 
 
 }
