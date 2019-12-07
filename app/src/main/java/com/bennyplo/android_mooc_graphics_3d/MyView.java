@@ -6,6 +6,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 public class MyView extends View {
     private Paint redPaint; //paint object for drawing the lines
     private Coordinate[]cube_vertices;//the vertices of a 3D cube
@@ -17,7 +21,7 @@ public class MyView extends View {
         redPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         redPaint.setStyle(Paint.Style.STROKE);//Stroke
         redPaint.setColor(Color.RED);
-        redPaint.setStrokeWidth(2);
+        redPaint.setStrokeWidth(5);
         //create a 3D cube
         cube_vertices = new Coordinate[8];
         cube_vertices[0] = new Coordinate(-1, -1, -1, 1);
@@ -32,7 +36,6 @@ public class MyView extends View {
         draw_cube_vertices=scale(draw_cube_vertices,40,40,40);
         //draw_cube_vertices=rotate_y(draw_cube_vertices,45); // rotate in y
         //draw_cube_vertices=rotate_x(draw_cube_vertices,45); // rotate in x
-        draw_cube_vertices = 
 
         // ---- 3D Affine Transformation - Assignment part 1 ---- //
         Coordinate centre = FindCentre(cube_vertices);
@@ -44,6 +47,33 @@ public class MyView extends View {
 
 
         thisview.invalidate();//update the view
+
+        // ---- Add a timer to enable animation --- /
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            float position_x = 0f;
+            boolean dir = true;
+
+            @Override
+            public void run() { 
+                if (position_x + 80 >= getWidth() && dir == true){
+                    dir = false;
+                } if (dir == false && position_x <= 0) {
+                    dir = true;
+                }
+                if (dir) {
+                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
+                    position_x += 1f;
+                } else {
+                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
+                    //draw_cube_vertices = rotate_x();
+                    position_x -= 1f;
+                }
+                thisview.invalidate(); // update the view
+            }
+        };
+        timer.scheduleAtFixedRate(task, 100, 2);
+
     }
 
     private  void DrawLinePairs(Canvas canvas, Coordinate[] vertices, int start, int end, Paint paint)
@@ -80,8 +110,7 @@ public class MyView extends View {
     }
     //*********************************
     //matrix and transformation functions
-    public double []GetIdentityMatrix()
-    {//return an 4x4 identity matrix
+    public double []GetIdentityMatrix() {//return an 4x4 identity matrix
         double []matrix=new double[16];
         matrix[0]=1;matrix[1]=0;matrix[2]=0;matrix[3]=0;
         matrix[4]=0;matrix[5]=1;matrix[6]=0;matrix[7]=0;
@@ -89,8 +118,7 @@ public class MyView extends View {
         matrix[12]=0;matrix[13]=0;matrix[14]=0;matrix[15]=1;
         return matrix;
     }
-    public Coordinate Transformation(Coordinate vertex,double []matrix)
-    {//affine transformation with homogeneous coordinates
+    public Coordinate Transformation(Coordinate vertex,double []matrix) {//affine transformation with homogeneous coordinates
         //i.e. a vector (vertex) multiply with the transformation matrix
         // vertex - vector in 3D
         // matrix - transformation matrix
@@ -101,8 +129,7 @@ public class MyView extends View {
         result.w=matrix[12]*vertex.x+matrix[13]*vertex.y+matrix[14]*vertex.z+matrix[15];
         return result;
     }
-    public Coordinate[]Transformation(Coordinate []vertices,double []matrix)
-    {   //Affine transform a 3D object with vertices
+    public Coordinate[]Transformation(Coordinate []vertices,double []matrix) {   //Affine transform a 3D object with vertices
         // vertices - vertices of the 3D object.
         // matrix - transformation matrix
         Coordinate[] result=new Coordinate[vertices.length];
@@ -115,16 +142,14 @@ public class MyView extends View {
     }
     //***********************************************************
     //Affine transformation
-    public Coordinate[] translate (Coordinate[] vertices, double tx, double ty, double tz)
-    {
+    public Coordinate[] translate (Coordinate[] vertices, double tx, double ty, double tz) {
         double[] matrix = GetIdentityMatrix();
         matrix[3] = tx;
         matrix[7] = ty;
         matrix[11] = tz;
         return Transformation(vertices,matrix);
     }
-    private Coordinate[] scale (Coordinate[] vertices, double sx, double sy, double sz)
-    {
+    private Coordinate[] scale (Coordinate[] vertices, double sx, double sy, double sz) {
         double[] matrix = GetIdentityMatrix();
         matrix[0] = sx;
         matrix[5] = sy;
@@ -144,8 +169,7 @@ public class MyView extends View {
         return centre;
     }
 
-    private Coordinate[] rotate_x (Coordinate[] vertices, double theta)
-    {
+    private Coordinate[] rotate_x (Coordinate[] vertices, double theta) {
         theta = theta*Math.PI/180;
         double[] matrix = GetIdentityMatrix();
         matrix[5] = Math.cos(theta);
@@ -154,8 +178,7 @@ public class MyView extends View {
         matrix[10] = Math.cos(theta);
         return Transformation(vertices, matrix);
     }
-    private Coordinate[] rotate_y (Coordinate[] vertices, double theta)
-    {
+    private Coordinate[] rotate_y (Coordinate[] vertices, double theta) {
         theta = theta*Math.PI/180;
         double[] matrix = GetIdentityMatrix();
         matrix[0] = Math.cos(theta);
@@ -164,8 +187,7 @@ public class MyView extends View {
         matrix[10] = Math.cos(theta);
         return Transformation(vertices, matrix);
     }
-    private Coordinate[] rotate_z (Coordinate[] vertices, double theta)
-    {
+    private Coordinate[] rotate_z (Coordinate[] vertices, double theta) {
         theta = theta * Math.PI / 180;
         double[] matrix = GetIdentityMatrix();
         matrix[0] = Math.cos(theta);
