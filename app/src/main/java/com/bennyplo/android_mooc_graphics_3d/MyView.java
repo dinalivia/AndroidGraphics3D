@@ -32,7 +32,7 @@ public class MyView extends View {
         cube_vertices[5] = new Coordinate(1, -1, 1, 1);
         cube_vertices[6] = new Coordinate(1, 1, -1, 1);
         cube_vertices[7] = new Coordinate(1, 1, 1, 1);
-        draw_cube_vertices=translate(cube_vertices,2,2,2);
+        draw_cube_vertices=translate(cube_vertices,3,3,3);
         draw_cube_vertices=scale(draw_cube_vertices,40,40,40);
         //draw_cube_vertices=rotate_y(draw_cube_vertices,45); // rotate in y
         //draw_cube_vertices=rotate_x(draw_cube_vertices,45); // rotate in x
@@ -45,6 +45,8 @@ public class MyView extends View {
         //draw_cube_vertices=translate(cube_vertices,centre.x,centre.y,centre.z);
         //draw_cube_vertices=translate(cube_vertices,5,-5,2);
 
+        //draw_cube_vertices = rotate_x(draw_cube_vertices, 90);
+        //draw_cube_vertices = rotate_y(draw_cube_vertices, 25);
 
         thisview.invalidate();//update the view
 
@@ -54,21 +56,38 @@ public class MyView extends View {
             float position_x = 0f;
             boolean dir = true;
 
-            @Override
-            public void run() { 
-                if (position_x + 80 >= getWidth() && dir == true){
-                    dir = false;
-                } if (dir == false && position_x <= 0) {
-                    dir = true;
-                }
-                if (dir) {
-                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
-                    position_x += 1f;
-                } else {
-                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
-                    //draw_cube_vertices = rotate_x();
-                    position_x -= 1f;
-                }
+            float rotation_z = 0;
+
+             @Override
+            public void run() {
+//                if (position_x + 80 >= getWidth() && dir == true){
+//                    dir = false;
+//                } if (dir == false && position_x <= 0) {
+//                    dir = true;
+//                }
+//                if (dir) {
+//                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
+//                    draw_cube_vertices = rotate_x(draw_cube_vertices, -5);
+//                    position_x += 1f;
+//                } else {
+//                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
+//                    //Coordinate centre = FindCentre(draw_cube_vertices);
+//                    //draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
+//                    draw_cube_vertices = rotate_x(draw_cube_vertices, 5);
+//                    //draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+//
+//                    position_x -= 1f;
+//                }
+                 if (rotation_z >= 360) {
+                     rotation_z = 0;
+                 }
+//                     draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
+                     Coordinate centre = FindCentre(draw_cube_vertices);
+                     draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
+                     draw_cube_vertices = rotate_z(draw_cube_vertices, rotation_z);
+                     draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+
+                     rotation_z += 1;
                 thisview.invalidate(); // update the view
             }
         };
@@ -196,7 +215,5 @@ public class MyView extends View {
         matrix[5] = Math.cos(theta);
         return Transformation(vertices, matrix);
     }
-
-
 
 }
