@@ -54,25 +54,50 @@ public class MyView extends View {
             float position_x = 0f;
             boolean dir = true;
 
+            double theta = 0;
+
             @Override
-            public void run() { 
-                if (position_x + 80 >= getWidth() && dir == true){
-                    dir = false;
-                } if (dir == false && position_x <= 0) {
-                    dir = true;
-                }
-                if (dir) {
-                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
-                    position_x += 1f;
+            public void run() {
+                run(Canvas canvas);
+            }
+
+            @Override
+            public void run(Canvas canvas) {
+//                if (position_x + 80 >= getWidth() && dir == true){
+//                    dir = false;
+//                } if (dir == false && position_x <= 0) {
+//                    dir = true;
+//                }
+//                if (dir) {
+//                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
+//                    position_x += 1f;
+//                } else {
+//                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
+////                  draw_cube_vertices = rotate_x();
+//                    position_x -= 1f;
+//                }
+
+
+
+
+                if(theta < 360) {
+                    Coordinate centre = FindCentre(draw_cube_vertices);
+                    draw_cube_vertices = translate(draw_cube_vertices, centre.x,centre.y,centre.z);
+                    draw_cube_vertices = rotate_z(draw_cube_vertices, theta);
+                    draw_cube_vertices = translate(draw_cube_vertices, -centre.x,-centre.y,-centre.z);
+
+//                    draw_cube_vertices = translate(draw_cube_vertices,60,60,0);
+                    theta = (180*Math.atan2(centre.y, centre.x)/Math.PI) + 1;
+                    canvas.drawText("Some Text", 10, 25, redPaint);
+
                 } else {
-                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
-                    //draw_cube_vertices = rotate_x();
-                    position_x -= 1f;
+                    theta = 0;
                 }
+
                 thisview.invalidate(); // update the view
             }
         };
-        timer.scheduleAtFixedRate(task, 100, 2);
+        timer.scheduleAtFixedRate(task, 100, 60);
 
     }
 
