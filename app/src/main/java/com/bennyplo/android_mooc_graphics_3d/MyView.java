@@ -32,21 +32,11 @@ public class MyView extends View {
         cube_vertices[5] = new Coordinate(1, -1, 1, 1);
         cube_vertices[6] = new Coordinate(1, 1, -1, 1);
         cube_vertices[7] = new Coordinate(1, 1, 1, 1);
-        draw_cube_vertices=translate(cube_vertices,3,3,3);
+        draw_cube_vertices=translate(cube_vertices,10,10,10);
         draw_cube_vertices=scale(draw_cube_vertices,40,40,40);
-        //draw_cube_vertices=rotate_y(draw_cube_vertices,45); // rotate in y
-        //draw_cube_vertices=rotate_x(draw_cube_vertices,45); // rotate in x
 
         // ---- 3D Affine Transformation - Assignment part 1 ---- //
         Coordinate centre = FindCentre(cube_vertices);
-        //draw_cube_vertices=translate(cube_vertices,-centre.x,-centre.y,-centre.z);
-        //draw_cube_vertices=rotate_z(draw_cube_vertices,80); // rotate in z
-        //draw_cube_vertices=rotate_y(draw_cube_vertices,30); // rotate in y
-        //draw_cube_vertices=translate(cube_vertices,centre.x,centre.y,centre.z);
-        //draw_cube_vertices=translate(cube_vertices,5,-5,2);
-
-        //draw_cube_vertices = rotate_x(draw_cube_vertices, 90);
-        //draw_cube_vertices = rotate_y(draw_cube_vertices, 25);
 
         thisview.invalidate();//update the view
 
@@ -56,10 +46,14 @@ public class MyView extends View {
             float position_x = 0f;
             boolean dir = true;
 
-            float rotation_z = 0;
+            double rotation_z = 0;
+            Coordinate centre = FindCentre(draw_cube_vertices);
 
-             @Override
+            @Override
             public void run() {
+
+                // ---LINEAR ANIMATION - LECTURE EXAMPLE ------- /
+
 //                if (position_x + 80 >= getWidth() && dir == true){
 //                    dir = false;
 //                } if (dir == false && position_x <= 0) {
@@ -78,20 +72,24 @@ public class MyView extends View {
 //
 //                    position_x -= 1f;
 //                }
-                 if (rotation_z >= 360) {
-                     rotation_z = 0;
-                 }
-//                     draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
-                     Coordinate centre = FindCentre(draw_cube_vertices);
+
+                // --------- ROTATION ANIMATION --------------- /
+                 if (rotation_z < 180) {
                      draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
                      draw_cube_vertices = rotate_z(draw_cube_vertices, rotation_z);
                      draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
 
-                     rotation_z += 1;
+                     draw_cube_vertices = translate(draw_cube_vertices,60,60,0);
+
+                     rotation_z = 180*(Math.atan2(centre.y, centre.x))/Math.PI + 1;
+                 } else {
+                     rotation_z = 0;
+                 }
+
                 thisview.invalidate(); // update the view
             }
         };
-        timer.scheduleAtFixedRate(task, 100, 2);
+        timer.scheduleAtFixedRate(task, 100, 60);
 
     }
 
