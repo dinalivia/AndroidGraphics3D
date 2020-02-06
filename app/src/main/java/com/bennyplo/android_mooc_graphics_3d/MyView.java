@@ -32,11 +32,22 @@ public class MyView extends View {
         cube_vertices[5] = new Coordinate(1, -1, 1, 1);
         cube_vertices[6] = new Coordinate(1, 1, -1, 1);
         cube_vertices[7] = new Coordinate(1, 1, 1, 1);
-        draw_cube_vertices=translate(cube_vertices,10,10,10);
+        draw_cube_vertices=translate(cube_vertices,13,13,13);
         draw_cube_vertices=scale(draw_cube_vertices,40,40,40);
 
+
         // ---- 3D Affine Transformation - Assignment part 1 ---- //
+
         Coordinate centre = FindCentre(cube_vertices);
+
+        draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
+        draw_cube_vertices = rotate_x(draw_cube_vertices,  30);
+        draw_cube_vertices = rotate_y(draw_cube_vertices, -30);
+        draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+
+        draw_cube_vertices=translate(draw_cube_vertices,30,30,0);
+
+//        draw_cube_vertices=translate(draw_cube_vertices,50,300,10);
 
         thisview.invalidate();//update the view
 
@@ -46,7 +57,7 @@ public class MyView extends View {
             float position_x = 0f;
             boolean dir = true;
 
-            double rotation_z = 0;
+            double rotation_z = 0, rotation_x = 0;
             Coordinate centre = FindCentre(draw_cube_vertices);
 
             @Override
@@ -74,22 +85,26 @@ public class MyView extends View {
 //                }
 
                 // --------- ROTATION ANIMATION --------------- /
-                 if (rotation_z < 180) {
+
+//                if (rotation_x >= 360) {
+//                     rotation_x = rotation_x - 360;
+//                }
+                if (rotation_z >= 360) {
+                    rotation_z = rotation_z - 360;
+                }
+
                      draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
                      draw_cube_vertices = rotate_z(draw_cube_vertices, rotation_z);
                      draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
 
-                     draw_cube_vertices = translate(draw_cube_vertices,60,60,0);
+                     draw_cube_vertices = translate(draw_cube_vertices,30,30,0);
 
                      rotation_z = 180*(Math.atan2(centre.y, centre.x))/Math.PI + 1;
-                 } else {
-                     rotation_z = 0;
-                 }
 
                 thisview.invalidate(); // update the view
             }
         };
-        timer.scheduleAtFixedRate(task, 100, 60);
+        timer.scheduleAtFixedRate(task, 100, 90);
 
     }
 
@@ -213,5 +228,7 @@ public class MyView extends View {
         matrix[5] = Math.cos(theta);
         return Transformation(vertices, matrix);
     }
+
+    private quartenion
 
 }
