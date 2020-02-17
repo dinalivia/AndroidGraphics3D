@@ -42,8 +42,10 @@ public class MyView extends View {
 
 //        draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
 
-//        draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0.5, 0.5, 0.5);
-//
+//        draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0.5, -0.5, 0.5);
+
+        double y = -0.5;
+
 //        draw_cube_vertices = rotate_z(draw_cube_vertices,  25);
 //        draw_cube_vertices = rotate_y(draw_cube_vertices, 90);
 //        draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
@@ -56,15 +58,18 @@ public class MyView extends View {
 
         // ---- Add a timer to enable animation --- /
         Timer timer = new Timer();
-//        TimerTask task = new TimerTask() {
-//            float position_x = 0f;
-//            boolean dir = true;
-//
-//            double rotation_z = 0, rotation_x = 0;
-//            Coordinate centre = FindCentre(draw_cube_vertices);
-//
-//            @Override
-//            public void run() {
+        TimerTask task = new TimerTask() {
+            float position_x = 0f;
+
+            double position_y = -0.5d;
+
+            boolean dir = true;
+
+            double rotation_z = 0, rotation_x = 0;
+            Coordinate centre = FindCentre(draw_cube_vertices);
+
+            @Override
+            public void run() {
 //
 //                // ---LINEAR ANIMATION - LECTURE EXAMPLE ------- /
 //
@@ -108,29 +113,37 @@ public class MyView extends View {
 //
 //                // --------- ROTATION ANIMATION QUATERNION--------------- /
 //
-////                if (rotation_x >= 360) {
-////                     rotation_x = rotation_x - 360;
-////                }
-//                if (rotation_z >= 360) {
-//                    rotation_z = rotation_z - 360;
-//                }
-//
-//                 draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
-//                 draw_cube_vertices = rotate_z(draw_cube_vertices, rotation_z);
-//
-        draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0, y, 0.5);
-//                 draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
-//
-//                 draw_cube_vertices = translate(draw_cube_vertices,30,30,0);
-////                draw_cube_vertices = translate(draw_cube_vertices,0,30,30);
-//
-//
-//                rotation_z = 180*(Math.atan2(centre.y, centre.x))/Math.PI + 1;
-//
-//                thisview.invalidate(); // update the view
-//            }
-//        };
-//        timer.scheduleAtFixedRate(task, 100, 90);
+                if (position_y >= 0 && dir == true){
+                    dir = false;
+                } if (dir == false && position_y <= -1) {
+                    dir = true;
+                }
+                if (dir) {
+//                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
+                    draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0, 0.05, 0.05);
+
+//                    draw_cube_vertices = rotate_x(draw_cube_vertices, -5);
+
+                    position_y += 0.05d;
+                } else {
+//                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
+
+                    draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0, -0.05, -0.05);
+
+
+
+                    //Coordinate centre = FindCentre(draw_cube_vertices);
+                    //draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
+//                    draw_cube_vertices = rotate_x(draw_cube_vertices, 5);
+                    //draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+
+                    position_y -= 0.05d;
+                };
+
+                thisview.invalidate(); // update the view
+            }
+        };
+        timer.scheduleAtFixedRate(task, 100, 90);
 
     }
 
