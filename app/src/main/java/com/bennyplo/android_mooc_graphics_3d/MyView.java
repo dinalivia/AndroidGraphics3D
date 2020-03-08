@@ -12,8 +12,11 @@ import java.util.TimerTask;
 
 public class MyView extends View {
     private Paint redPaint; //paint object for drawing the lines
-    private Coordinate[]cube_vertices;//the vertices of a 3D cube
-    private Coordinate[]draw_cube_vertices;//the vertices for drawing a 3D cube
+    private Coordinate[]cube_head;//the vertices of a 3D cube
+    private Coordinate[]cube_body;//the vertices of a 3D cube
+
+    private Coordinate[]draw_head_vertices;//the vertices for drawing a 3D cube [HEAD]
+    private Coordinate[]draw_body_vertices;//the vertices for drawing a 3D cube [BODY]
     public MyView(Context context) {
         super(context, null);
         final MyView thisview=this;
@@ -22,37 +25,62 @@ public class MyView extends View {
         redPaint.setStyle(Paint.Style.STROKE);//Stroke
         redPaint.setColor(Color.RED);
         redPaint.setStrokeWidth(5);
+
+        // ----------------- ROBOT HEAD --------------------- //
         //create a 3D cube
-        cube_vertices = new Coordinate[8];
-        cube_vertices[0] = new Coordinate(-1, -1, -1, 1);
-        cube_vertices[1] = new Coordinate(-1, -1, 1, 1);
-        cube_vertices[2] = new Coordinate(-1, 1, -1, 1);
-        cube_vertices[3] = new Coordinate(-1, 1, 1, 1);
-        cube_vertices[4] = new Coordinate(1, -1, -1, 1);
-        cube_vertices[5] = new Coordinate(1, -1, 1, 1);
-        cube_vertices[6] = new Coordinate(1, 1, -1, 1);
-        cube_vertices[7] = new Coordinate(1, 1, 1, 1);
-        draw_cube_vertices=translate(cube_vertices,13,13,13);
-        draw_cube_vertices=scale(draw_cube_vertices,40,40,40);
+        cube_head = new Coordinate[8];
+        
+        cube_head[0] = new Coordinate(-1, -1, -1, 1);
+        cube_head[1] = new Coordinate(-1, -1, 1, 1);
+        cube_head[2] = new Coordinate(-1, 1, -1, 1);
+        cube_head[3] = new Coordinate(-1, 1, 1, 1);
+        cube_head[4] = new Coordinate(1, -1, -1, 1);
+        cube_head[5] = new Coordinate(1, -1, 1, 1);
+        cube_head[6] = new Coordinate(1, 1, -1, 1);
+        cube_head[7] = new Coordinate(1, 1, 1, 1);
+
+        draw_head_vertices=translate(cube_head,13,13,13);
+        draw_head_vertices=scale(draw_head_vertices,40,40,40);
+
+        // ----------------- ROBOT BODY --------------------- //
+        //create a 3D cube
+        cube_body = new Coordinate[8];
+
+        cube_body[0] = new Coordinate(-1, -1, -1, 1);
+        cube_body[1] = new Coordinate(-1, -1, 1, 1);
+        cube_body[2] = new Coordinate(-1, 1, -1, 1);
+        cube_body[3] = new Coordinate(-1, 1, 1, 1);
+        cube_body[4] = new Coordinate(1, -1, -1, 1);
+        cube_body[5] = new Coordinate(1, -1, 1, 1);
+        cube_body[6] = new Coordinate(1, 1, -1, 1);
+        cube_body[7] = new Coordinate(1, 1, 1, 1);
+
+//        draw_body_vertices=translate(cube_body,0,2,0);
+//        draw_body_vertices=translate(draw_body_vertices,13,13,13);
+//        draw_body_vertices=scale(draw_body_vertices,40,40,40);
 
 
+
+
+        
         // ---- 3D Affine Transformation - Assignment part 1 ---- //
 
-        Coordinate centre = FindCentre(cube_vertices);
+        Coordinate centre = FindCentre(cube_head);
 
-//        draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
+//        draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
 
-//        draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0.5, -0.5, 0.5);
+//        draw_head_vertices = quartenion(draw_head_vertices, 1, 0.5, -0.5, 0.5);
 
         double y = -0.5;
 
-//        draw_cube_vertices = rotate_z(draw_cube_vertices,  25);
-//        draw_cube_vertices = rotate_y(draw_cube_vertices, 90);
-//        draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+//        draw_head_vertices = rotate_z(draw_head_vertices,  25);
+//        draw_head_vertices = rotate_y(draw_head_vertices, 90);
+//        draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
 
-        draw_cube_vertices=translate(draw_cube_vertices,30,30,0);
+        draw_head_vertices=translate(draw_head_vertices,30,30,0);
+//        draw_body_vertices=translate(draw_body_vertices,30,30,0);
 
-//        draw_cube_vertices=translate(draw_cube_vertices,50,300,0);
+//        draw_head_vertices=translate(draw_head_vertices,50,300,0);
 
         thisview.invalidate();//update the view
 
@@ -66,7 +94,7 @@ public class MyView extends View {
             boolean dir = true;
 
             double rotation_z = 0, rotation_x = 0;
-            Coordinate centre = FindCentre(draw_cube_vertices);
+            Coordinate centre = FindCentre(draw_head_vertices);
 
             @Override
             public void run() {
@@ -79,15 +107,15 @@ public class MyView extends View {
 ////                    dir = true;
 ////                }
 ////                if (dir) {
-////                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
-////                    draw_cube_vertices = rotate_x(draw_cube_vertices, -5);
+////                    draw_head_vertices = translate(draw_head_vertices, 1f,0,0);
+////                    draw_head_vertices = rotate_x(draw_head_vertices, -5);
 ////                    position_x += 1f;
 ////                } else {
-////                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
-////                    //Coordinate centre = FindCentre(draw_cube_vertices);
-////                    //draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
-////                    draw_cube_vertices = rotate_x(draw_cube_vertices, 5);
-////                    //draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+////                    draw_head_vertices = translate(draw_head_vertices, -1f,0,0);
+////                    //Coordinate centre = FindCentre(draw_head_vertices);
+////                    //draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
+////                    draw_head_vertices = rotate_x(draw_head_vertices, 5);
+////                    //draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
 ////
 ////                    position_x -= 1f;
 ////                }
@@ -101,12 +129,12 @@ public class MyView extends View {
 ////                    rotation_z = rotation_z - 360;
 ////                }
 ////
-////                     draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
-////                     draw_cube_vertices = rotate_y(draw_cube_vertices, rotation_z);
-////                     draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+////                     draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
+////                     draw_head_vertices = rotate_y(draw_head_vertices, rotation_z);
+////                     draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
 ////
-//////                     draw_cube_vertices = translate(draw_cube_vertices,30,30,0);
-////                    draw_cube_vertices = translate(draw_cube_vertices,0,30,30);
+//////                     draw_head_vertices = translate(draw_head_vertices,30,30,0);
+////                    draw_head_vertices = translate(draw_head_vertices,0,30,30);
 ////
 ////
 ////                rotation_x = 180*(Math.atan2(centre.y, centre.x))/Math.PI + 1;
@@ -119,23 +147,23 @@ public class MyView extends View {
                     dir = true;
                 }
                 if (dir) {
-//                    draw_cube_vertices = translate(draw_cube_vertices, 1f,0,0);
-                    draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0, 0.05, 0.05);
+//                    draw_head_vertices = translate(draw_head_vertices, 1f,0,0);
+                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 0.05, 0.05);
 
-//                    draw_cube_vertices = rotate_x(draw_cube_vertices, -5);
+//                    draw_head_vertices = rotate_x(draw_head_vertices, -5);
 
                     position_y += 0.05d;
                 } else {
-//                    draw_cube_vertices = translate(draw_cube_vertices, -1f,0,0);
+//                    draw_head_vertices = translate(draw_head_vertices, -1f,0,0);
 
-                    draw_cube_vertices = quartenion(draw_cube_vertices, 1, 0, -0.05, -0.05);
+                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, -0.05, -0.05);
 
 
 
-                    //Coordinate centre = FindCentre(draw_cube_vertices);
-                    //draw_cube_vertices = translate(draw_cube_vertices,-centre.x,-centre.y,-centre.z);
-//                    draw_cube_vertices = rotate_x(draw_cube_vertices, 5);
-                    //draw_cube_vertices = translate(draw_cube_vertices,centre.x,centre.y,centre.z);
+                    //Coordinate centre = FindCentre(draw_head_vertices);
+                    //draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
+//                    draw_head_vertices = rotate_x(draw_head_vertices, 5);
+                    //draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
 
                     position_y -= 0.05d;
                 };
@@ -147,6 +175,7 @@ public class MyView extends View {
 
     }
 
+
     private  void DrawLinePairs(Canvas canvas, Coordinate[] vertices, int start, int end, Paint paint)
     {//draw a line connecting 2 points
         //canvas - canvas of the view
@@ -157,27 +186,28 @@ public class MyView extends View {
         canvas.drawLine((int)vertices[start].x,(int)vertices[start].y,(int)vertices[end].x,(int)vertices[end].y,paint);
     }
 
-    private void DrawCube(Canvas canvas)
+    private void DrawCube(Canvas canvas, Coordinate[] cube)
     {//draw a cube on the screen
-        DrawLinePairs(canvas, draw_cube_vertices, 0, 1, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 1, 3, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 3, 2, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 2, 0, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 4, 5, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 5, 7, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 7, 6, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 6, 4, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 0, 4, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 1, 5, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 2, 6, redPaint);
-        DrawLinePairs(canvas, draw_cube_vertices, 3, 7, redPaint);
+        DrawLinePairs(canvas, cube, 0, 1, redPaint);
+        DrawLinePairs(canvas, cube, 1, 3, redPaint);
+        DrawLinePairs(canvas, cube, 3, 2, redPaint);
+        DrawLinePairs(canvas, cube, 2, 0, redPaint);
+        DrawLinePairs(canvas, cube, 4, 5, redPaint);
+        DrawLinePairs(canvas, cube, 5, 7, redPaint);
+        DrawLinePairs(canvas, cube, 7, 6, redPaint);
+        DrawLinePairs(canvas, cube, 6, 4, redPaint);
+        DrawLinePairs(canvas, cube, 0, 4, redPaint);
+        DrawLinePairs(canvas, cube, 1, 5, redPaint);
+        DrawLinePairs(canvas, cube, 2, 6, redPaint);
+        DrawLinePairs(canvas, cube, 3, 7, redPaint);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         //draw objects on the screen
         super.onDraw(canvas);
-        DrawCube(canvas);//draw a cube onto the screen
+        DrawCube(canvas, cube_head);//draw a cube onto the screen
+//        DrawCube(canvas, cube_body);//draw a cube onto the screen
     }
     //*********************************
     //matrix and transformation functions
