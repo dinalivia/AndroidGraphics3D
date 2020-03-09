@@ -14,9 +14,18 @@ public class MyView extends View {
     private Paint redPaint; //paint object for drawing the lines
     private Coordinate[]cube_head;//the vertices of a 3D cube
     private Coordinate[]cube_body;//the vertices of a 3D cube
+    private Coordinate[]cube_leftleg;//the vertices of a 3D cube
+    private Coordinate[]cube_rightleg;//the vertices of a 3D cube
+    private Coordinate[]cube_leftarm;//the vertices of a 3D cube
+    private Coordinate[]cube_rightarm;//the vertices of a 3D cube
 
     private Coordinate[]draw_head_vertices;//the vertices for drawing a 3D cube [HEAD]
     private Coordinate[]draw_body_vertices;//the vertices for drawing a 3D cube [BODY]
+    private Coordinate[]draw_leftleg_vertices;//the vertices for drawing a 3D cube [LEFT LEG]
+    private Coordinate[]draw_rightleg_vertices;//the vertices for drawing a 3D cube [RIGHT LEG]
+    private Coordinate[]draw_leftarm_vertices;//the vertices for drawing a 3D cube [LEFT LEG]
+    private Coordinate[]draw_rightarm_vertices;//the vertices for drawing a 3D cube [RIGHT LEG]
+
     public MyView(Context context) {
         super(context, null);
         final MyView thisview=this;
@@ -27,7 +36,7 @@ public class MyView extends View {
         redPaint.setStrokeWidth(5);
 
         // ----------------- ROBOT HEAD --------------------- //
-        //create a 3D cube
+
         cube_head = new Coordinate[8];
         
         cube_head[0] = new Coordinate(-1, -1, -1, 1);
@@ -40,7 +49,7 @@ public class MyView extends View {
         cube_head[7] = new Coordinate(1, 1, 1, 1);
 
         draw_head_vertices=translate(cube_head,13,13,13);
-        draw_head_vertices=scale(draw_head_vertices,40,40,40);
+        draw_head_vertices=scale(draw_head_vertices,50,50,50);
 
         // ----------------- ROBOT BODY --------------------- //
         //create a 3D cube
@@ -48,18 +57,84 @@ public class MyView extends View {
 
         cube_body[0] = new Coordinate(-1, -1, -1, 1);
         cube_body[1] = new Coordinate(-1, -1, 1, 1);
-        cube_body[2] = new Coordinate(-1, 1, -1, 1);
-        cube_body[3] = new Coordinate(-1, 1, 1, 1);
+        cube_body[2] = new Coordinate(-1, 2, -1, 1);
+        cube_body[3] = new Coordinate(-1, 2, 1, 1);
         cube_body[4] = new Coordinate(1, -1, -1, 1);
         cube_body[5] = new Coordinate(1, -1, 1, 1);
-        cube_body[6] = new Coordinate(1, 1, -1, 1);
-        cube_body[7] = new Coordinate(1, 1, 1, 1);
+        cube_body[6] = new Coordinate(1, 2, -1, 1);
+        cube_body[7] = new Coordinate(1, 2, 1, 1);
 
-//        draw_body_vertices=translate(cube_body,0,2,0);
-//        draw_body_vertices=translate(draw_body_vertices,13,13,13);
-//        draw_body_vertices=scale(draw_body_vertices,40,40,40);
+        draw_body_vertices=translate(cube_body,0,2,0);
+        draw_body_vertices=translate(draw_body_vertices,13,13,13);
+        draw_body_vertices=scale(draw_body_vertices,50,50,50);
 
+        // ----------------- ROBOT LEFT LEG --------------------- //
+        //create a 3D cube
+        cube_leftleg = new Coordinate[8];
 
+        cube_leftleg[0] = new Coordinate(-0.5, -1, -1, 1);
+        cube_leftleg[1] = new Coordinate(-0.5, -1, 1, 1);
+        cube_leftleg[2] = new Coordinate(-0.5, 2, -1, 1);
+        cube_leftleg[3] = new Coordinate(-0.5, 2, 1, 1);
+        cube_leftleg[4] = new Coordinate(0.5, -1, -1, 1);
+        cube_leftleg[5] = new Coordinate(0.5, -1, 1, 1);
+        cube_leftleg[6] = new Coordinate(0.5, 2, -1, 1);
+        cube_leftleg[7] = new Coordinate(0.5, 2, 1, 1);
+
+        draw_leftleg_vertices=translate(cube_leftleg,-0.5,5,0);
+        draw_leftleg_vertices=translate(draw_leftleg_vertices,13,13,13);
+        draw_leftleg_vertices=scale(draw_leftleg_vertices,50,50,50);
+
+        // ----------------- ROBOT RIGHT LEG --------------------- //
+        //create a 3D cube
+        cube_rightleg = new Coordinate[8];
+
+        cube_rightleg[0] = new Coordinate(-0.5, -1, -1, 1);
+        cube_rightleg[1] = new Coordinate(-0.5, -1, 1, 1);
+        cube_rightleg[2] = new Coordinate(-0.5, 2, -1, 1);
+        cube_rightleg[3] = new Coordinate(-0.5, 2, 1, 1);
+        cube_rightleg[4] = new Coordinate(0.5, -1, -1, 1);
+        cube_rightleg[5] = new Coordinate(0.5, -1, 1, 1);
+        cube_rightleg[6] = new Coordinate(0.5, 2, -1, 1);
+        cube_rightleg[7] = new Coordinate(0.5, 2, 1, 1);
+
+        draw_rightleg_vertices=translate(cube_rightleg,0.5,5,0);
+        draw_rightleg_vertices=translate(draw_rightleg_vertices,13,13,13);
+        draw_rightleg_vertices=scale(draw_rightleg_vertices,50,50,50);
+
+        // ----------------- ROBOT LEFT ARM --------------------- //
+        //create a 3D cube
+        cube_leftarm = new Coordinate[8];
+
+        cube_leftarm[0] = new Coordinate(-0.5, -1, -1, 1);
+        cube_leftarm[1] = new Coordinate(-0.5, -1, 1, 1);
+        cube_leftarm[2] = new Coordinate(-0.5, 2, -1, 1);
+        cube_leftarm[3] = new Coordinate(-0.5, 2, 1, 1);
+        cube_leftarm[4] = new Coordinate(0.5, -1, -1, 1);
+        cube_leftarm[5] = new Coordinate(0.5, -1, 1, 1);
+        cube_leftarm[6] = new Coordinate(0.5, 2, -1, 1);
+        cube_leftarm[7] = new Coordinate(0.5, 2, 1, 1);
+
+        draw_leftarm_vertices=translate(cube_leftarm,-1.5,2,0);
+        draw_leftarm_vertices=translate(draw_leftarm_vertices,13,13,13);
+        draw_leftarm_vertices=scale(draw_leftarm_vertices,50,50,50);
+
+        // ----------------- ROBOT RIGHT ARM --------------------- //
+        //create a 3D cube
+        cube_rightarm = new Coordinate[8];
+
+        cube_rightarm[0] = new Coordinate(-0.5, -1, -1, 1);
+        cube_rightarm[1] = new Coordinate(-0.5, -1, 1, 1);
+        cube_rightarm[2] = new Coordinate(-0.5, 2, -1, 1);
+        cube_rightarm[3] = new Coordinate(-0.5, 2, 1, 1);
+        cube_rightarm[4] = new Coordinate(0.5, -1, -1, 1);
+        cube_rightarm[5] = new Coordinate(0.5, -1, 1, 1);
+        cube_rightarm[6] = new Coordinate(0.5, 2, -1, 1);
+        cube_rightarm[7] = new Coordinate(0.5, 2, 1, 1);
+
+        draw_rightarm_vertices=translate(cube_rightarm,1.5,2,0);
+        draw_rightarm_vertices=translate(draw_rightarm_vertices,13,13,13);
+        draw_rightarm_vertices=scale(draw_rightarm_vertices,50,50,50);
 
 
         
@@ -77,7 +152,7 @@ public class MyView extends View {
 //        draw_head_vertices = rotate_y(draw_head_vertices, 90);
 //        draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
 
-        draw_head_vertices=translate(draw_head_vertices,30,30,0);
+//        draw_head_vertices=translate(draw_head_vertices,30,30,0);
 //        draw_body_vertices=translate(draw_body_vertices,30,30,0);
 
 //        draw_head_vertices=translate(draw_head_vertices,50,300,0);
@@ -93,85 +168,161 @@ public class MyView extends View {
 
             boolean dir = true;
 
-            double rotation_z = 0, rotation_x = 0;
-            Coordinate centre = FindCentre(draw_head_vertices);
+            double rotation_z = 0, rotation_x = 0, rotation_y = 0;
+            Coordinate centre_head = FindCentre(draw_head_vertices);
+            Coordinate centre_body = FindCentre(draw_body_vertices);
+
+//            Coordinate[] vertice;//the vertices of a 3D cube
+//            vertice = new Coordinate[8];
+//            vertice[0] = new Coordinate(-0.5, -1, -1, 1);
+//            vertice[1] = new Coordinate(-0.5, -1, 1, 1);
 
             @Override
             public void run() {
+
+                // ---LINEAR ANIMATION - LECTURE EXAMPLE ------- /
+
+//                if (position_x + 80 >= getWidth() && dir == true){
+//                    dir = false;
+//                } if (dir == false && position_x <= 0) {
+//                    dir = true;
+//                }
+//                if (dir) {
+//                    draw_head_vertices = translate(draw_head_vertices, 1f,0,0);
+//                    draw_head_vertices = rotate_x(draw_head_vertices, -5);
+//                    position_x += 1f;
+//                } else {
+//                    draw_head_vertices = translate(draw_head_vertices, -1f,0,0);
+//                    //Coordinate centre = FindCentre(draw_head_vertices);
+//                    //draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
+//                    draw_head_vertices = rotate_x(draw_head_vertices, 5);
+//                    //draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
 //
-//                // ---LINEAR ANIMATION - LECTURE EXAMPLE ------- /
+//                    position_x -= 1f;
+//                }
+
+                // --------- ROTATION ANIMATION --------------- /
+
+//                if (rotation_x >= 360) {
+//                     rotation_x = rotation_x - 360;
+//                }
+//                if (rotation_y >= 360) {
+//                    rotation_y = rotation_y - 360;
+//                }
 //
-////                if (position_x + 80 >= getWidth() && dir == true){
-////                    dir = false;
-////                } if (dir == false && position_x <= 0) {
-////                    dir = true;
-////                }
-////                if (dir) {
-////                    draw_head_vertices = translate(draw_head_vertices, 1f,0,0);
-////                    draw_head_vertices = rotate_x(draw_head_vertices, -5);
-////                    position_x += 1f;
-////                } else {
-////                    draw_head_vertices = translate(draw_head_vertices, -1f,0,0);
-////                    //Coordinate centre = FindCentre(draw_head_vertices);
-////                    //draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
-////                    draw_head_vertices = rotate_x(draw_head_vertices, 5);
-////                    //draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
-////
-////                    position_x -= 1f;
-////                }
+//                // HEAD ROTATION
 //
-////                // --------- ROTATION ANIMATION --------------- /
-////
-//////                if (rotation_x >= 360) {
-//////                     rotation_x = rotation_x - 360;
-//////                }
-////                if (rotation_z >= 360) {
-////                    rotation_z = rotation_z - 360;
-////                }
-////
-////                     draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
-////                     draw_head_vertices = rotate_y(draw_head_vertices, rotation_z);
-////                     draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
-////
-//////                     draw_head_vertices = translate(draw_head_vertices,30,30,0);
-////                    draw_head_vertices = translate(draw_head_vertices,0,30,30);
-////
-////
-////                rotation_x = 180*(Math.atan2(centre.y, centre.x))/Math.PI + 1;
+//                draw_head_vertices = translate(draw_head_vertices,-centre_head.x,-centre_head.y,-centre_head.z);
+//                draw_head_vertices = rotate_y(draw_head_vertices, rotation_y);
+//                draw_head_vertices = translate(draw_head_vertices,centre_head.x,centre_head.y,centre_head.z);
 //
-//                // --------- ROTATION ANIMATION QUATERNION--------------- /
+////               draw_head_vertices = translate(draw_head_vertices,30,30,0);
+////                draw_head_vertices = translate(draw_head_vertices,0,30,30);
 //
+//                // BODY ROTATION
+//
+//                draw_body_vertices = translate(draw_body_vertices,-centre_body.x,-centre_body.y,-centre_body.z);
+//                draw_body_vertices = rotate_y(draw_body_vertices, rotation_y);
+//                draw_body_vertices = translate(draw_body_vertices,centre_body.x,centre_body.y,centre_body.z);
+//
+////               draw_head_vertices = translate(draw_head_vertices,30,30,0);
+////                draw_body_vertices = translate(draw_body_vertices,0,30,30);
+//
+//                rotation_y = 180*(Math.atan2(centre_body.z, centre_body.x))/Math.PI + 1;
+
+                // --------- ROTATION ANIMATION QUATERNION--------------- /
+
                 if (position_y >= 0 && dir == true){
                     dir = false;
                 } if (dir == false && position_y <= -1) {
                     dir = true;
                 }
+
+                if (rotation_y >= 360) {
+//                    rotation_y = rotation_y - 360;
+                    rotation_y = 0;
+                }
+
                 if (dir) {
 //                    draw_head_vertices = translate(draw_head_vertices, 1f,0,0);
-                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 0.05, 0.05);
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 0.05, 0.05);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0, 0.05, 0.05);
+
+                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0.01, 0, 0.01);
+                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0.01,0, 0.01);
+                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0.01,0, 0.01);
+                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0.01,0, 0.01);
+                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0.01,0, 0.01);
+                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0.01,0, 0.01);
+
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 0.1, 0);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,0.1, 0);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,0.1, 0);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,0.1, 0);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,0.1, 0);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,0.1, 0);
 
 //                    draw_head_vertices = rotate_x(draw_head_vertices, -5);
 
+                    Coordinate[] leftarm = new Coordinate[2];
+                    leftarm[0] = draw_leftarm_vertices[0]; leftarm[1] = draw_leftarm_vertices[1];
+                    Coordinate centre_leftarm = FindCentre(leftarm);
+                    draw_leftarm_vertices = translate(draw_leftarm_vertices,-centre_leftarm.x,-centre_leftarm.y,-centre_leftarm.z);
+                    draw_leftarm_vertices = rotate_z(draw_leftarm_vertices, -5);
+                    draw_leftarm_vertices = translate(draw_leftarm_vertices,centre_leftarm.x,centre_leftarm.y,centre_leftarm.z);
+
+                    Coordinate[] rightarm = new Coordinate[2];
+                    rightarm[0] = draw_rightarm_vertices[0]; rightarm[1] = draw_rightarm_vertices[1];
+                    Coordinate centre_rightarm = FindCentre(rightarm);
+                    draw_rightarm_vertices = translate(draw_rightarm_vertices,-centre_rightarm.x,-centre_rightarm.y,-centre_rightarm.z);
+                    draw_rightarm_vertices = rotate_z(draw_rightarm_vertices, -5);
+                    draw_rightarm_vertices = translate(draw_rightarm_vertices,centre_rightarm.x,centre_rightarm.y,centre_rightarm.z);
+
                     position_y += 0.05d;
+
+                    rotation_y = 180*(Math.atan2(centre_leftarm.z, centre_leftarm.x))/Math.PI - 5;
+
                 } else {
 //                    draw_head_vertices = translate(draw_head_vertices, -1f,0,0);
 
-                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, -0.05, -0.05);
+                    draw_head_vertices = quartenion(draw_head_vertices, 1, -0.01, 0, -0.01);
+                    draw_body_vertices = quartenion(draw_body_vertices, 1, -0.01,0, -0.01);
+                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, -0.01,0, -0.01);
+                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, -0.01,0, -0.01);
+                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, -0.01,0, -0.01);
+                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, -0.01,0, -0.01);
 
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, -0.1, 0);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,-0.1, 0);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,-0.1, 0);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,-0.1, 0);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,-0.1, 0);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,-0.1, 0);
 
+                    Coordinate[] leftarm = new Coordinate[2];
+                    leftarm[0] = draw_leftarm_vertices[0]; leftarm[1] = draw_leftarm_vertices[1];
+                    Coordinate centre_leftarm = FindCentre(leftarm);
+                    draw_leftarm_vertices = translate(draw_leftarm_vertices,-centre_leftarm.x,-centre_leftarm.y,-centre_leftarm.z);
+                    draw_leftarm_vertices = rotate_z(draw_leftarm_vertices, 5);
+                    draw_leftarm_vertices = translate(draw_leftarm_vertices,centre_leftarm.x,centre_leftarm.y,centre_leftarm.z);
 
-                    //Coordinate centre = FindCentre(draw_head_vertices);
-                    //draw_head_vertices = translate(draw_head_vertices,-centre.x,-centre.y,-centre.z);
-//                    draw_head_vertices = rotate_x(draw_head_vertices, 5);
-                    //draw_head_vertices = translate(draw_head_vertices,centre.x,centre.y,centre.z);
+                    Coordinate[] rightarm = new Coordinate[2];
+                    rightarm[0] = draw_rightarm_vertices[0]; rightarm[1] = draw_rightarm_vertices[1];
+                    Coordinate centre_rightarm = FindCentre(rightarm);
+                    draw_rightarm_vertices = translate(draw_rightarm_vertices,-centre_rightarm.x,-centre_rightarm.y,-centre_rightarm.z);
+                    draw_rightarm_vertices = rotate_z(draw_rightarm_vertices, 5);
+                    draw_rightarm_vertices = translate(draw_rightarm_vertices,centre_rightarm.x,centre_rightarm.y,centre_rightarm.z);
 
                     position_y -= 0.05d;
+
+                    rotation_y = 180*(Math.atan2(centre_leftarm.z, centre_leftarm.x))/Math.PI + 5;
+
                 };
 
                 thisview.invalidate(); // update the view
             }
         };
-        timer.scheduleAtFixedRate(task, 100, 90);
+        timer.scheduleAtFixedRate(task, 10, 90);
 
     }
 
@@ -206,8 +357,13 @@ public class MyView extends View {
     protected void onDraw(Canvas canvas) {
         //draw objects on the screen
         super.onDraw(canvas);
-        DrawCube(canvas, cube_head);//draw a cube onto the screen
-//        DrawCube(canvas, cube_body);//draw a cube onto the screen
+        DrawCube(canvas, draw_head_vertices);//draw a cube onto the screen
+        DrawCube(canvas, draw_body_vertices);//draw a cube onto the screen
+        DrawCube(canvas, draw_leftleg_vertices);
+        DrawCube(canvas, draw_rightleg_vertices);
+        DrawCube(canvas, draw_leftarm_vertices);
+        DrawCube(canvas, draw_rightarm_vertices);
+
     }
     //*********************************
     //matrix and transformation functions
@@ -224,10 +380,10 @@ public class MyView extends View {
         // vertex - vector in 3D
         // matrix - transformation matrix
         Coordinate result=new Coordinate();
-        result.x=matrix[0]*vertex.x+matrix[1]*vertex.y+matrix[2]*vertex.z+matrix[3];
-        result.y=matrix[4]*vertex.x+matrix[5]*vertex.y+matrix[6]*vertex.z+matrix[7];
-        result.z=matrix[8]*vertex.x+matrix[9]*vertex.y+matrix[10]*vertex.z+matrix[11];
-        result.w=matrix[12]*vertex.x+matrix[13]*vertex.y+matrix[14]*vertex.z+matrix[15];
+        result.x = matrix[0]*vertex.x + matrix[1]*vertex.y + matrix[2]*vertex.z + matrix[3];
+        result.y = matrix[4]*vertex.x + matrix[5]*vertex.y + matrix[6]*vertex.z + matrix[7];
+        result.z = matrix[8]*vertex.x + matrix[9]*vertex.y + matrix[10]*vertex.z + matrix[11];
+        result.w = matrix[12]*vertex.x + matrix[13]*vertex.y + matrix[14]*vertex.z + matrix[15];
         return result;
     }
     public Coordinate[]Transformation(Coordinate []vertices,double []matrix) {   //Affine transform a 3D object with vertices
@@ -299,18 +455,26 @@ public class MyView extends View {
     }
 
     private Coordinate[] quartenion (Coordinate[] vertices, double w, double x, double y, double z) {
-        double[] matrix = GetIdentityMatrix();
+        double[] matrix = new double[16]; //= GetIdentityMatrix();
         matrix[0] = ((w*w) + (x*x) - (y*y) - (z*z));
         matrix[1] = (2*(x*y) - 2*(w*z));
         matrix[2] = (2*(x*z) + 2*(w*z));
+        matrix[3] = 0;
 
         matrix[4] = (2*(x*y) + 2*(w*z));
         matrix[5] = ((w*w) + (y*y) - (x*x) - (z*z));
         matrix[6] = (2*(y*z) - 2*(w*x));
+        matrix[7] = 0;
 
         matrix[8] = (2*(x*z) - 2*(w*y));
         matrix[9] = (2*(y*z) + 2*(w*x));
         matrix[10] = ((w*w) + (z*z) - (x*x) - (y*y));
+        matrix[11] = 0;
+
+        matrix[12] = 0;
+        matrix[13] = 0;
+        matrix[14] = 0;
+        matrix[15] = 1;
 
         return Transformation(vertices, matrix);
     }
