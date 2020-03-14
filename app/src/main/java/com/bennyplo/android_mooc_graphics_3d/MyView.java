@@ -136,7 +136,6 @@ public class MyView extends View {
         draw_rightarm_vertices=translate(draw_rightarm_vertices,13,13,13);
         draw_rightarm_vertices=scale(draw_rightarm_vertices,50,50,50);
 
-
         
         // ---- 3D Affine Transformation - Assignment part 1 ---- //
 
@@ -162,9 +161,11 @@ public class MyView extends View {
         // ---- Add a timer to enable animation --- /
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
-            float position_x = 0f;
+            double position_x = 0;
+            double position_y = 0;
+            double position_z = 0;
 
-            double position_y = -0.5d;
+            double step = 0;
 
             boolean dir = true;
 
@@ -232,35 +233,54 @@ public class MyView extends View {
 
                 // --------- ROTATION ANIMATION QUATERNION--------------- /
 
-                if (position_y >= 0 && dir == true){
-                    dir = false;
-                } if (dir == false && position_y <= -1) {
-                    dir = true;
-                }
+//                if (step >= 1 && dir == true){
+//                    dir = false;
+//                } if (dir == false && step <= -1) {
+//                    dir = true;
+//                }
 
-                if (rotation_y >= 360) {
-//                    rotation_y = rotation_y - 360;
-                    rotation_y = 0;
+                if (rotation_y >= 180) {
+                    rotation_y = rotation_y - 360;
+//                    rotation_y = 0;
                 }
 
                 if (dir) {
+//                    [PROPABLY WRONG]
 //                    draw_head_vertices = translate(draw_head_vertices, 1f,0,0);
 //                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 0.05, 0.05);
 //                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0, 0.05, 0.05);
 
-                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0.01, 0, 0.01);
-                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0.01,0, 0.01);
-                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0.01,0, 0.01);
-                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0.01,0, 0.01);
-                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0.01,0, 0.01);
-                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0.01,0, 0.01);
 
-//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 0.1, 0);
-//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,0.1, 0);
-//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,0.1, 0);
-//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,0.1, 0);
-//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,0.1, 0);
-//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,0.1, 0);
+//                    [PROPABLY WRONG]
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0.01, 0, 0.01);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0.01,0, 0.01);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0.01,0, 0.01);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0.01,0, 0.01);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0.01,0, 0.01);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0.01,0, 0.01);
+
+//                    [MIGHT BE RIGHT]
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, position_y, 0);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,position_y, 0);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,position_y, 0);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,position_y, 0);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,position_y, 0);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,position_y, 0);
+
+//                  [TESTING]
+                    draw_head_vertices = quartenion(draw_head_vertices, 1, position_x, position_y, position_z);
+                    draw_body_vertices = quartenion(draw_body_vertices, 1, position_x, position_y, position_z);
+                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, position_x, position_y, position_z);
+                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, position_x, position_y, position_z);
+                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, position_x, position_y, position_z);
+                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, position_x, position_y, position_z);
+
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, 1, 0);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,1, 0);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,1, 0);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,1, 0);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,1, 0);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,1, 0);
 
 //                    draw_head_vertices = rotate_x(draw_head_vertices, -5);
 
@@ -277,27 +297,49 @@ public class MyView extends View {
                     draw_rightarm_vertices = translate(draw_rightarm_vertices,-centre_rightarm.x,-centre_rightarm.y,-centre_rightarm.z);
                     draw_rightarm_vertices = rotate_z(draw_rightarm_vertices, -5);
                     draw_rightarm_vertices = translate(draw_rightarm_vertices,centre_rightarm.x,centre_rightarm.y,centre_rightarm.z);
+//
 
-                    position_y += 0.05d;
+                    position_x = 0;
+                    position_y = 1;
+                    position_z = 0;
+                    step += 1d;
+//                      if (position_y >= 1) {
+//                        position_y = 0;
+//                      }
 
-                    rotation_y = 180*(Math.atan2(centre_leftarm.z, centre_leftarm.x))/Math.PI - 5;
+                    rotation_y = 180*(Math.atan2(centre_leftarm.z, centre_leftarm.x))/Math.PI - 30;
 
                 } else {
 //                    draw_head_vertices = translate(draw_head_vertices, -1f,0,0);
 
-                    draw_head_vertices = quartenion(draw_head_vertices, 1, -0.01, 0, -0.01);
-                    draw_body_vertices = quartenion(draw_body_vertices, 1, -0.01,0, -0.01);
-                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, -0.01,0, -0.01);
-                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, -0.01,0, -0.01);
-                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, -0.01,0, -0.01);
-                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, -0.01,0, -0.01);
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, -0.01, 0, -0.01);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, -0.01,0, -0.01);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, -0.01,0, -0.01);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, -0.01,0, -0.01);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, -0.01,0, -0.01);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, -0.01,0, -0.01);
 
-//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, -0.1, 0);
-//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,-0.1, 0);
-//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,-0.1, 0);
-//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,-0.1, 0);
-//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,-0.1, 0);
-//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,-0.1, 0);
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, position_y, 0);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,position_y, 0);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,position_y, 0);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,position_y, 0);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,position_y, 0);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,position_y, 0);
+
+//                  [TESTING]
+                    draw_head_vertices = quartenion(draw_head_vertices, 1, position_x, position_y, position_z);
+                    draw_body_vertices = quartenion(draw_body_vertices, 1, position_x, position_y, position_z);
+                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, position_x, position_y, position_z);
+                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, position_x, position_y, position_z);
+                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, position_x, position_y, position_z);
+                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, position_x, position_y, position_z);
+
+//                    draw_head_vertices = quartenion(draw_head_vertices, 1, 0, -1, 0);
+//                    draw_body_vertices = quartenion(draw_body_vertices, 1, 0,-1, 0);
+//                    draw_leftarm_vertices = quartenion(draw_leftarm_vertices, 1, 0,-1, 0);
+//                    draw_rightarm_vertices = quartenion(draw_rightarm_vertices, 1, 0,-1, 0);
+//                    draw_leftleg_vertices = quartenion(draw_leftleg_vertices, 1, 0,-1, 0);
+//                    draw_rightleg_vertices = quartenion(draw_rightleg_vertices, 1, 0,-1, 0);
 
                     Coordinate[] leftarm = new Coordinate[2];
                     leftarm[0] = draw_leftarm_vertices[0]; leftarm[1] = draw_leftarm_vertices[1];
@@ -313,16 +355,19 @@ public class MyView extends View {
                     draw_rightarm_vertices = rotate_z(draw_rightarm_vertices, 5);
                     draw_rightarm_vertices = translate(draw_rightarm_vertices,centre_rightarm.x,centre_rightarm.y,centre_rightarm.z);
 
-                    position_y -= 0.05d;
+                    position_x = 0;
+                    position_y = 1;
+                    position_z = 0;
+                    step -= 1d;
 
-                    rotation_y = 180*(Math.atan2(centre_leftarm.z, centre_leftarm.x))/Math.PI + 5;
+                    rotation_y = 180*(Math.atan2(centre_leftarm.z, centre_leftarm.x))/Math.PI + 30;
 
                 };
 
                 thisview.invalidate(); // update the view
             }
         };
-        timer.scheduleAtFixedRate(task, 10, 90);
+        timer.scheduleAtFixedRate(task, 100, 360);
 
     }
 
@@ -456,25 +501,56 @@ public class MyView extends View {
 
     private Coordinate[] quartenion (Coordinate[] vertices, double w, double x, double y, double z) {
         double[] matrix = new double[16]; //= GetIdentityMatrix();
-        matrix[0] = ((w*w) + (x*x) - (y*y) - (z*z));
-        matrix[1] = (2*(x*y) - 2*(w*z));
-        matrix[2] = (2*(x*z) + 2*(w*z));
+
+        // w = 1, x = 0, y = 1, z = 0
+
+        matrix[0] = ((w*w) + (x*x) - (y*y) - (z*z)); // = 0
+        matrix[1] = (2*(x*y) - 2*(w*z)); // = 0
+        matrix[2] = (2*(x*z) + 2*(w*z)); // = +2
         matrix[3] = 0;
 
-        matrix[4] = (2*(x*y) + 2*(w*z));
-        matrix[5] = ((w*w) + (y*y) - (x*x) - (z*z));
-        matrix[6] = (2*(y*z) - 2*(w*x));
+        matrix[4] = (2*(x*y) + 2*(w*z)); // = 0
+        matrix[5] = ((w*w) + (y*y) - (x*x) - (z*z)); // = 2
+        matrix[6] = (2*(y*z) - 2*(w*x)); // = 0
         matrix[7] = 0;
 
-        matrix[8] = (2*(x*z) - 2*(w*y));
-        matrix[9] = (2*(y*z) + 2*(w*x));
-        matrix[10] = ((w*w) + (z*z) - (x*x) - (y*y));
+        matrix[8] = (2*(x*z) - 2*(w*y)); // = -2
+        matrix[9] = (2*(y*z) + 2*(w*x)); // = 0
+        matrix[10] = ((w*w) + (z*z) - (x*x) - (y*y)); // = 0
         matrix[11] = 0;
 
         matrix[12] = 0;
         matrix[13] = 0;
         matrix[14] = 0;
         matrix[15] = 1;
+
+        // w = 1, x = 0, y = 1, z = 0
+
+//        matrix[0] = ((w*w) + (x*x) - (y*y) - (z*z)); // = 0
+//        matrix[1] = (2*(x*y) + 2*(w*z)); // = 0
+//        matrix[2] = (2*(x*z) - 2*(w*y)); // = -2
+//        matrix[3] = 0;
+//
+//        matrix[4] = (2*(x*y) - 2*(w*z)); // = 0
+//        matrix[5] = ((w*w) + (y*y) - (x*x) - (z*z)); // = 2
+//        matrix[6] = (2*(y*z) + 2*(w*x)); // = 0
+//        matrix[7] = 0;
+//
+//        matrix[8] = (2*(x*z) + 2*(w*y)); // = 2
+//        matrix[9] = (2*(y*z) - 2*(w*x)); // = 0
+//        matrix[10] = ((w*w) + (z*z) - (x*x) - (y*y)); // = 0
+//        matrix[11] = 0;
+//
+//        matrix[12] = 0;
+//        matrix[13] = 0;
+//        matrix[14] = 0;
+//        matrix[15] = ((w*w) + (x*x) + (y*y) + (z*z)); // = 2
+
+
+        // 0  0 -2  0
+        // 0  2  0  0
+        // 2  0  0  0
+        // 0  0  0  2
 
         return Transformation(vertices, matrix);
     }
